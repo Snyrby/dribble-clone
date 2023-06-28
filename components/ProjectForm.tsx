@@ -1,6 +1,11 @@
-import React from 'react'
+import { SessionInterface } from "@/common.types"
 
-const ProjectForm = () => {
+type Props = {
+  type: string,
+  session: SessionInterface,
+}
+
+const ProjectForm = ({type, session}: Props) => {
   return (
     <div>ProjectForm</div>
   )
