@@ -61,4 +61,5 @@ export interface ProjectForm {
   liveSiteUrl: string;
   githubUrl: string;
   category: string;
+  imageId: string;
 }

@@ -91,6 +91,7 @@ export const getProjectByIdQuery = `
       title
       description
       image
+      imageId
       liveSiteUrl
       githubUrl
       category

@@ -20,7 +20,6 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
   const projectDetails = result?.project;
 
   const renderLink = () => `/profile/${projectDetails?.createdBy?.id}`;
-
   return (
     <Modal>
       <section className="flexBetween gap-y-8 max-w-4xl max-xs:flex-col w-full">
@@ -54,7 +53,7 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
 
         {session?.user?.email === projectDetails?.createdBy?.email && (
           <div className="flex justify-end items-center gap-2">
-            <ProjectActions projectId={projectDetails?.id} pictureId={projectDetails?.imageId} />
+            <ProjectActions projectId={projectDetails?.id} imageId={projectDetails?.imageId} />
           </div>
         )}
       </section>
