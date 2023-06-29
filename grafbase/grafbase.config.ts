@@ -23,11 +23,13 @@ const Project = g
   .model("Project", {
     title: g.string().length({ min: 3 }),
     description: g.string(),
-    image: g.url(),
+    // imageu: g.url(),
+    // imageId: g.string(),
     liveSiteUrl: g.url(),
     githubUrl: g.url(),
     category: g.string().search(),
     createdBy: g.relation(() => User),
+    image: g.json(),
   })
   .auth((rules) => {
     rules.public().read(), rules.private().create().delete().update();

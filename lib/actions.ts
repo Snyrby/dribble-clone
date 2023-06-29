@@ -72,7 +72,7 @@ export const uploadImage = async (imagePath: string) => {
 
 export const deleteImage = async (imagePath: string) => {
   try {
-    const response = await f
+    const response = await fetch(`${serverUrl}/api/delete-image`)
   } catch (error) {
     
   }
@@ -89,13 +89,16 @@ export const createNewProject = async (
     const variables = {
       input: {
         ...form,
-        image: imageUrl.url,
+        image: {
+          imageUrl: imageUrl.url,
+          imageId: imageUrl.id,
+        },
         createdBy: {
           link: creatorId,
         },
       },
     };
-    return makeGraphQLRequest(createProjectMutation, variables);
+    // return makeGraphQLRequest(createProjectMutation, variables);
   }
 };
 
@@ -135,6 +138,6 @@ export const updateProject = async (form: ProjectForm, projectId: string, token:
 
   
   
-  client.setHeader("Authorization", `Bearer ${token}`);
-  return makeGraphQLRequest(deleteProjectMutation, { id });
+  // client.setHeader("Authorization", `Bearer ${token}`);
+  // return makeGraphQLRequest(deleteProjectMutation, { id });
 };

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       );
     }
     try {
-        await cloudinary.uploader.destroy()
+        // await cloudinary.uploader.destroy()
     } catch (error) {
         
     }
