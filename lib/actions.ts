@@ -70,11 +70,15 @@ export const uploadImage = async (imagePath: string) => {
   }
 };
 
-export const deleteImage = async (imagePath: string) => {
+export const deleteImage = async (imageId: string) => {
   try {
-    const response = await fetch(`${serverUrl}/api/delete-image`)
+      await fetch(`${serverUrl}/api/delete-image`, {
+      method: "DELETE",
+      body: JSON.stringify({ id: imageId }),
+    });
+    return
   } catch (error) {
-    
+    throw error;
   }
 };
 
@@ -84,21 +88,21 @@ export const createNewProject = async (
   token: string
 ) => {
   const imageUrl = await uploadImage(form.image);
+  console.log(imageUrl.public_id);
+  
   if (imageUrl.url) {
     client.setHeader("Authorization", `Bearer ${token}`);
     const variables = {
       input: {
         ...form,
-        image: {
-          imageUrl: imageUrl.url,
-          imageId: imageUrl.id,
-        },
+        image: imageUrl.url,
+        imageId: imageUrl.public_id,
         createdBy: {
           link: creatorId,
         },
       },
     };
-    // return makeGraphQLRequest(createProjectMutation, variables);
+    return makeGraphQLRequest(createProjectMutation, variables);
   }
 };
 
@@ -120,8 +124,9 @@ export const getUserProjects = (id: string, last?: number) => {
   return makeGraphQLRequest(getProjectsOfUserQuery, { id, last });
 };
 
-export const deleteProject = (id: string, token: string) => {
+export const deleteProject = async (id: string, token: string, imageId: string) => {
   client.setHeader("Authorization", `Bearer ${token}`);
+  await deleteImage(imageId);
   return makeGraphQLRequest(deleteProjectMutation, { id });
 };
 

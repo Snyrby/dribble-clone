@@ -6,17 +6,19 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function POST(request: Request) {
-    const { path } = await request.json();
-    if (!path) {
-      return NextResponse.json(
-        { message: "Image path is required." },
-        { status: 400 }
-      );
-    }
-    try {
-        // await cloudinary.uploader.destroy()
-    } catch (error) {
-        
-    }
+export async function DELETE(request: Request) {
+  const { id } = await request.json();
+  console.log(id);
+  if (!id) {
+    return NextResponse.json(
+      { message: "Image Id is required." },
+      { status: 400 }
+    );
+  }
+  try {
+    await cloudinary.uploader.destroy(id);
+    return NextResponse.next({ status: 200 });
+  } catch (error) {
+    return NextResponse.json({ message: error }, { status: 500 });
+  }
 }

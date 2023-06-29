@@ -6,7 +6,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-const ProjectActions = ({ projectId }: { projectId: string }) => {
+type Props = {
+  projectId: string;
+  imageId: string,
+}
+
+const ProjectActions = ({ projectId, imageId }: Props) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false)
   
@@ -14,7 +19,7 @@ const ProjectActions = ({ projectId }: { projectId: string }) => {
     setIsDeleting(true);
     const { token } = await fetchToken();
     try {
-      await deleteProject(projectId, token);
+      await deleteProject(projectId, token, imageId);
       router.push("/")
     } catch (error) {
       console.log(error);
