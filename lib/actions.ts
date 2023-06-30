@@ -1,6 +1,7 @@
 import {
   deleteProjectMutation,
   getProjectsOfUserQuery,
+  prevProjectsQuery,
   updateProjectMutation,
 } from "./../graphql/index";
 import { ProjectForm } from "@/common.types";
@@ -114,6 +115,14 @@ export const fetchAllProjects = async (
 ) => {
   client.setHeader("x-api-key", apiKey);
   return makeGraphQLRequest(projectsQuery, { category, endcursor });
+};
+
+export const fetchAllPreviousProjects = async (
+  category?: string,
+  endcursor?: string
+) => {
+  client.setHeader("x-api-key", apiKey);
+  return makeGraphQLRequest(prevProjectsQuery, { category, endcursor });
 };
 
 export const getProjectDetails = (id: string) => {

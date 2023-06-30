@@ -1,8 +1,10 @@
+"use client";
 import { ProjectInterface } from "@/common.types";
 import Categories from "@/components/Categories";
 import LoadMore from "@/components/LoadMore";
 import ProjectCard from "@/components/ProjectCard";
-import { fetchAllProjects } from "@/lib/actions";
+import { fetchAllPreviousProjects, fetchAllProjects } from "@/lib/actions";
+import { useState } from "react";
 
 type ProjectSearch = {
   projectSearch: {
@@ -11,20 +13,37 @@ type ProjectSearch = {
       hasPreviousPage: boolean;
       hasNextPage: boolean;
       startCursor: string;
+      endCursor: string;
     };
   };
 };
 
 type SearchParams = {
   category?: string
+  endcursor?: string;
+  startcursor?: string;
 }
 
 type Props = {
   searchParams: SearchParams;
 }
 
-const Home = async ({ searchParams: { category }}:Props) => {
-  const data = (await fetchAllProjects(category)) as ProjectSearch;
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+export const revalidate = 0;
+
+const Home = async ({ searchParams: { category, endcursor, startcursor }}:Props) => {
+  const [prev, setPrev] = useState(false);
+  const handleStateChange = (value: boolean) => {
+    setPrev(value);
+  }
+  let data = {} as ProjectSearch;
+  if (prev === false) {
+    data = (await fetchAllProjects(category, endcursor )) as ProjectSearch;
+  } else {
+    data = (await fetchAllPreviousProjects(category, startcursor )) as ProjectSearch;
+    console.log(data);
+  }
   const projectsToDisplay = data?.projectSearch?.edges || [];
 
   if (projectsToDisplay.length === 0) {
@@ -59,6 +78,7 @@ const Home = async ({ searchParams: { category }}:Props) => {
         endCursor={pagination?.endCursor}
         hasPreviousPage={pagination?.hasPreviousPage}
         hasNextPage={pagination?.hasNextPage}
+        setState={(value) => handleStateChange(value)}
       />
     </section>
   );
