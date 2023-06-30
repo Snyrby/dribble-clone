@@ -15,7 +15,10 @@ export async function POST(request: Request) {
     );
   }
   try {
-    const result = await cloudinary.api.delete_resources(id, { type: "upload", resource_type: "image" });
+    const result = await cloudinary.api.delete_resources(id, {
+      type: "upload",
+      resource_type: "image",
+    });
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });

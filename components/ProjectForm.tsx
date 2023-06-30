@@ -34,6 +34,7 @@ const ProjectForm = ({ type, session, project }: Props) => {
           form,
           project?.id as string,
           token,
+          project?.imageId as string
         );
         router.push("/");
       }

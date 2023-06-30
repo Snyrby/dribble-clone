@@ -140,23 +140,23 @@ export const updateProject = async (
   form: ProjectForm,
   projectId: string,
   token: string,
+  imageId: string
 ) => {
   function isBase64DataURL(value: string) {
     const base64Regex = /^data:image\/[a-z]+;base64,/;
     return base64Regex.test(value);
   }
-  console.log(form.imageId);
-  
+
   let updatedForm = { ...form };
   const isUploadingNewImage = isBase64DataURL(form.image);
   if (isUploadingNewImage) {
-    await deleteImage(form.imageId);
+    await deleteImage(imageId);
     const imageUrl = await uploadImage(form.image);
     if (imageUrl.url) {
+      imageId = imageUrl.public_id;
       updatedForm = {
         ...form,
         image: imageUrl.url,
-        imageId: imageUrl.public_id,
       };
     }
   }
@@ -164,7 +164,8 @@ export const updateProject = async (
   const variables = {
     id: projectId,
     input: {
-      updatedForm,
+      ...updatedForm,
+      imageId: imageId,
     },
   };
   return makeGraphQLRequest(updateProjectMutation, variables);

@@ -53,7 +53,10 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
 
         {session?.user?.email === projectDetails?.createdBy?.email && (
           <div className="flex justify-end items-center gap-2">
-            <ProjectActions projectId={projectDetails?.id} imageId={projectDetails?.imageId} />
+            <ProjectActions
+              projectId={projectDetails?.id}
+              imageId={projectDetails?.imageId}
+            />
           </div>
         )}
       </section>
