@@ -18,31 +18,21 @@ const LoadMore = ({ startCursor, endCursor, hasPreviousPage, hasNextPage, setSta
   const handleNavigation = (direction: string) => {
     const currentParams = new URLSearchParams(window.location.search);
     if (direction === "next" && hasNextPage) {
-      console.log("start " + startCursor);
-      console.log("end " + endCursor);
-      console.log(hasPreviousPage);
-      console.log(hasNextPage);
       currentParams.delete("startcursor")
       currentParams.set("endcursor", endCursor)
+      setState(false);
     } else if (direction === "first" && hasPreviousPage) {
       currentParams.delete("endcursor");
       currentParams.set("startcursor", startCursor);
-      console.log(hasPreviousPage);
-      console.log(hasNextPage);
+      setState(false);
     } else if (direction === "previous" && hasPreviousPage) {
-      console.log("start " + startCursor);
-      console.log("end " + endCursor);
-      console.log(hasPreviousPage);
-      console.log(hasNextPage);
       currentParams.delete("endcursor");
       currentParams.set("startcursor", startCursor);
+      setState(true);
     }
     const newSearchParams = currentParams.toString();
     const newPathName = `${window.location.pathname}?${newSearchParams}`
     router.push(newPathName);
-    if (direction === "previous" && hasPreviousPage) {
-      setState(true);
-    }
   }
   return (
     <div className="w-full flexCenter gap-5 mt-10">

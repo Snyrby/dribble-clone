@@ -4,7 +4,6 @@ import Categories from "@/components/Categories";
 import LoadMore from "@/components/LoadMore";
 import ProjectCard from "@/components/ProjectCard";
 import { fetchAllPreviousProjects, fetchAllProjects } from "@/lib/actions";
-import { useState } from "react";
 
 type ProjectSearch = {
   projectSearch: {
@@ -32,17 +31,17 @@ export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 export const revalidate = 0;
 
+
+let previous = false;
 const Home = async ({ searchParams: { category, endcursor, startcursor }}:Props) => {
-  const [prev, setPrev] = useState(false);
   const handleStateChange = (value: boolean) => {
-    setPrev(value);
+    previous = value
   }
   let data = {} as ProjectSearch;
-  if (prev === false) {
+  if (previous === false) {
     data = (await fetchAllProjects(category, endcursor )) as ProjectSearch;
   } else {
     data = (await fetchAllPreviousProjects(category, startcursor )) as ProjectSearch;
-    console.log(data);
   }
   const projectsToDisplay = data?.projectSearch?.edges || [];
 
@@ -77,7 +76,7 @@ const Home = async ({ searchParams: { category, endcursor, startcursor }}:Props)
         startCursor={pagination?.startCursor}
         endCursor={pagination?.endCursor}
         hasPreviousPage={pagination?.hasPreviousPage}
-        hasNextPage={pagination?.hasNextPage}
+        hasNextPage={previous === true ? true : pagination?.hasNextPage}
         setState={(value) => handleStateChange(value)}
       />
     </section>
