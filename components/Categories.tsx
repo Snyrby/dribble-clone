@@ -9,7 +9,12 @@ const Categories = () => {
 
   const category = searchParams.get("category");
   const handleTags = (filter: string) => {
-    router.push(`${pathName}?category=${filter}`);
+    if (filter === "All") {
+      router.push(`${pathName}`);
+    }
+    else {
+      router.push(`${pathName}?category=${filter}`);
+    }
   };
 
   return (
@@ -21,7 +26,7 @@ const Categories = () => {
             key={filter}
             onClick={() => handleTags(filter)}
             className={`${
-              category === filter
+              (category === filter) || (!category && filter === "All")
                 ? "bg-light-white-300 font-medium"
                 : "font-normal"
             } px-4 py-0 rounded-lg capitalize whitespace-nowrap`}
